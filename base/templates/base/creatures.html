@@ -3,5 +3,16 @@
 
 {% block content  %}
 
-    <h1>Gods</h1>
+    <h1>Creatures</h1>
+    <div style="display: flex; margin-left: 3%;">
+    {% for creature in creatures %}
+    <div class="card" style="margin-left: 3%;">
+        <img height="300px" src="{{ creature.picture.url }}" alt="{{ creature.name }}" class="card-img">
+        <div class="card-content">
+          <h2 class="card-title">{{ creature.name }}</h2>
+            <p class="card-description">{{ creature.description |slice:":150" }}</p>
+            <a href="#" class="card-link">Learn More</a>
+        </div>
+    </div>
+    {% endfor %}</div>
 {% endblock %}

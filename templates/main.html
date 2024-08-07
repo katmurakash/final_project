@@ -3,32 +3,44 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    {% block title %} {% endblock %}
+    {% block title %}{% endblock %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-<header>
-    <a href="{% url 'home' %}" class="logo">Geo Myths</a>
-    <ul>
-        <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a href="{% url 'deities' %}">Deities</a></li>
-        <li><a href="{% url 'creatures' %}">Creatures</a></li>
-        <li><a href="{% url 'heroes' %}">Heroes</a></li>
-        <li><a href="{% url 'shop' %}">Shop</a></li>
-        <li><a href="#">Account</a></li>
-    </ul>
-</header>
+    <header>
+        <a href="{% url 'home' %}" class="logo">Geo Myths</a>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'deities' %}">Deities</a></li>
+            <li><a href="{% url 'creatures' %}">Creatures</a></li>
+            <li><a href="{% url 'heroes' %}">Heroes</a></li>
+            <li><a href="{% url 'shop' %}">Shop</a></li>
+        {% if request.user.is_authenticated %}
+            <li>
+                <a href="{% url 'profile' request.user.id %}"><img src="https://cdn-icons-png.flaticon.com/128/428/428173.png" style="width: 24px; height: 24px;"></a>
+            </li>
+        {% endif %}
 
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
-
-<script type="text/javascript">
-    window.addEventListener("scroll", function() {
-        var header = document.querySelector("header");
-        header.classList.toggle("sticky", window.scrollY > 0);
-    });
-</script>
+        </ul>
+        <form class="d-flex" role="search" action="{% if page_name == 'deities' %}{% url 'deities' %}{% elif page_name == 'creatures' %}{% url 'creatures' %}{% elif page_name == 'heroes' %}{% url 'heroes' %}{% elif page_name == 'shop' %}{% url 'shop' %}{% endif %}" method="get">
+            <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-light" type="submit">Search</button>
+        </form>
+        <ul>
+        <li><a href="#"><img src="https://cdn-icons-png.flaticon.com/128/17491/17491964.png" style="width: 24px; height: 24px;"></a></li>
+        </ul>
+    </header>
+    <script type="text/javascript">
+        window.addEventListener("scroll", function() {
+            var header = document.querySelector("header");
+            header.classList.toggle("sticky", window.scrollY > 0);
+        });
+    </script>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 </body>
 </html>

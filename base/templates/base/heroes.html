@@ -3,5 +3,16 @@
 
 {% block content  %}
 
-    <h1>Gods</h1>
+    <h1>Heroes</h1>
+   <div style="display: flex; margin-left: 3%;">
+    {% for hero in heroes %}
+    <div class="card" style="margin-left: 3%;">
+        <img height="300px" src="{{ hero.picture.url }}" alt="{{ hero.name }}" class="card-img">
+        <div class="card-content">
+          <h2 class="card-title">{{ hero.name }}</h2>
+            <p class="card-description">{{ hero.description |slice:":150" }}</p>
+            <a href="#" class="card-link">Learn More</a>
+        </div>
+    </div>
+    {% endfor %}</div>
 {% endblock %}
