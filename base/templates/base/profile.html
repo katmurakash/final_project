@@ -30,9 +30,10 @@
                         <p>{{ product.description }}</p>
                         <p>Price: {{ product.currency }}{{ product.price }}</p>
                         <div style="margin-top: auto;">
-                            <button style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; border: none; cursor: pointer;">Add to Cart</button>
-                            <button style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; border: none; cursor: pointer;">Buy Now</button>
+                            <a href="{% url 'delete' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Remove</a>
+                            <a href="{% url 'buy_now' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Buy Now</a>
                         </div>
+
                     </div>
                 {% empty %}
                     <p>No products available.</p>
