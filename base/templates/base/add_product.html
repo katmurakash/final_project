@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+{% block title %} <title>add</title>{% endblock %}
+
+{% block content %}
+<form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <label>Product Image</label>
+        <br>
+        {{ form.picture }}
+    </div>
+    <br>
+    <div>
+        <label>Product Name</label>
+        <br>
+        {{ form.name }}
+    </div>
+    <br>
+    <div>
+        <label>Category :</label>
+        <br>
+        <input required type="text" name="type" list="type-list">
+        <datalist id="type-list">
+            {% for type in types %}
+                <option value="{{ type.name }}">{{ type.name }}</option>
+            {% endfor %}
+        </datalist>
+    </div>
+    <div>
+        <label>Product Description:</label>
+        <br>
+        {{ form.description }}
+    </div>
+    <div>
+        <label>Price:</label>
+        <br>
+        {{ form.price }}
+    </div>
+    <div>
+        <label>Currency:</label>
+        <br>
+        {{ form.currency }}
+    </div>
+    <br>
+    <input type="submit" value="Upload">
+</form>
+{% endblock %}

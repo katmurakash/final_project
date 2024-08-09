@@ -11,6 +11,9 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
 
-        <button type="submit">Login</button>
+        <button type="submit" value="login">Login</button>
+          <br>
+        <p>Have not signed up yet?</p>
+        <a href="{% url 'register' %}">Register</a>
     </form>
 {% endblock %}

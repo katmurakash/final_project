@@ -3,10 +3,13 @@ from .models import God, Product, Hero, Creature, User, Type
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .forms import MyUserCreationForm, ProductForm
 # Create your views here.
+
 
 def home(request):
     return render(request, 'base/home.html')
+
 
 def deities(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -21,11 +24,13 @@ def creatures(request):
     context = {"creatures": creatures}
     return render(request, 'base/creatures.html', context)
 
+
 def heroes(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     heroes = Hero.objects.filter(Q(name__icontains=q) | Q(description__icontains=q))
     context = {"heroes": heroes}
     return render(request, 'base/heroes.html', context)
+
 
 def shop(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -35,6 +40,7 @@ def shop(request):
     types = Type.objects.all()
     context = {"products": products, "heading": heading, 'types': types}
     return render(request, 'base/shop.html', context)
+
 
 @login_required(login_url='login')
 def profile(request, pk):
@@ -46,25 +52,29 @@ def profile(request, pk):
     types = Type.objects.all()
     context = {"products": products, "heading": heading, 'types': types}
     return render(request, 'base/profile.html', context)
-@login_required(login_url='login')
 
+
+@login_required(login_url='login')
 def add(request, id):
     user = request.user
     product = Product.objects.get(id=id)
     user.products.add(product)
     return redirect('profile', request.user.id)
-@login_required(login_url='login')
 
+
+@login_required(login_url='login')
 def delete(request, id):
     user = request.user
     product = Product.objects.get(id=id)
     user.products.remove(product)
     return redirect('profile', request.user.id)
-@login_required(login_url='login')
 
+
+@login_required(login_url='login')
 def buy_now(request, id):
     product = get_object_or_404(Product, id=id)
     return render(request, 'base/buy_now.html', {'product': product})
+
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -85,11 +95,49 @@ def login_user(request):
             pass
     return render(request, 'base/login.html')
 
+
 def logout_user(request):
     logout(request)
     return redirect('home')
 
+
 def register_user(request):
-    return render(request, 'base/register.html')
+    form = MyUserCreationForm
+
+    if request.method == 'POST':
+        form = MyUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('profile', user.id)
+
+        else:
+            pass  #messages
+
+    context = {'form': form}
+    return render(request, 'base/register.html', context)
 
 
+@login_required(login_url='login')
+def add_product(request):
+    types = Type.objects.all()
+    form = ProductForm()
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            product_type = request.POST.get('type')
+            type_obj, created = Type.objects.get_or_create(name=product_type)
+
+            new_product = form.save(commit=False)
+            new_product.picture = request.FILES.get('picture')
+            new_product.save()
+            new_product.type.add(type_obj)
+
+            return redirect('shop')
+
+    context = {'form': form, 'types': types}
+    return render(request, 'base/add_product.html', context)
