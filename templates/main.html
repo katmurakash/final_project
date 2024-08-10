@@ -25,11 +25,10 @@
                 <a href="{% url 'logout' %}">Log out</a>
             </li>
         {% else %}
-             <li>
+            <li>
                 <a href="{% url 'login' %}">Log in</a>
             </li>
         {% endif %}
-
         </ul>
         <form class="d-flex" role="search" action="{% if page_name == 'deities' %}{% url 'deities' %}{% elif page_name == 'creatures' %}{% url 'creatures' %}{% elif page_name == 'heroes' %}{% url 'heroes' %}{% elif page_name == 'shop' %}{% url 'shop' %}{% endif %}" method="get">
             <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -39,12 +38,7 @@
         <li><a href="#"><img src="https://cdn-icons-png.flaticon.com/128/17491/17491964.png" style="width: 24px; height: 24px;"></a></li>
         </ul>
     </header>
-    <script type="text/javascript">
-        window.addEventListener("scroll", function() {
-            var header = document.querySelector("header");
-            header.classList.toggle("sticky", window.scrollY > 0);
-        });
-    </script>
+
     <main>
         {% block content %}
         {% endblock %}

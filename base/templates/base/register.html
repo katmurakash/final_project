@@ -1,15 +1,30 @@
 {% extends 'main.html' %}
-{% block title %} <title>Register</title>{% endblock %}
+{% block title %}<title>Register</title>{% endblock %}
 
 {% block content %}
-    <h1>Register</h1>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{ form }}
-        <br>
-        <input type="submit" value="Register">
-        <br>
-        <p>Are You Already Registered?</p>
-        <a href="{% url 'login' %}">Login</a>
-    </form>
+    <div class="container mt-4" style="max-width: 600px; margin: auto; padding: 20px;">
+        <h1 style="color: #000; font-size: 2rem;">Register</h1>
+        <hr style="border: 1px solid #000;">
+
+        {% if messages %}
+            <div class="alert-container" style="margin-bottom: 20px;">
+                {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background-color: #721c24; border: 1px solid #721c24;"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action="" style="background-color: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <input type="submit" value="Register" class="btn btn-primary" style="background-color: #000; color: #fff; border: none;">
+            <br><br>
+            <p style="color: #000;">Already Registered?</p>
+            <a href="{% url 'login' %}" class="btn btn-link" style="color: #000;">Login</a><br>
+        </form>
+    </div>
 {% endblock %}

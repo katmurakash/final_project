@@ -1,19 +1,36 @@
 {% extends 'main.html' %}
-{% block title %} <title>Login</title>{% endblock %}
+{% block title %}<title>Login</title>{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
-    <form method="POST" action="">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
+    <div class="container mt-4" style="max-width: 600px; margin: auto; padding: 20px;">
+        <h1 style="color: #000; font-size: 2rem;">Login</h1>
+        <hr style="border: 1px solid #000;">
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        {% if messages %}
+            <div class="alert-container" style="margin-bottom: 20px;">
+                {% for message in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background-color: #721c24; border: 1px solid #721c24;"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <button type="submit" value="login">Login</button>
-          <br>
-        <p>Have not signed up yet?</p>
-        <a href="{% url 'register' %}">Register</a>
-    </form>
+        <form method="POST" action="" style="background-color: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+            {% csrf_token %}
+
+            <label for="username" style="display: block; margin-bottom: 10px; color: #000;">Username:</label>
+            <input type="text" id="username" name="username" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <label for="password" style="display: block; margin-bottom: 10px; color: #000;">Password:</label>
+            <input type="password" id="password" name="password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;">
+
+            <button type="submit" value="login" style="background-color: #000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px;">Login</button>
+
+            <br><br>
+            <p style="color: #000;">Have not signed up yet?</p>
+            <a href="{% url 'register' %}" class="btn btn-link" style="color: #000;">Register</a>
+        </form>
+    </div>
 {% endblock %}

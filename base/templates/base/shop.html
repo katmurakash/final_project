@@ -34,6 +34,9 @@
                             {% if request.user.is_authenticated %}
                                 <a href="{% url 'add' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Add to Cart</a>
                                 <a href="{% url 'buy_now' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Buy Now</a>
+                                {% if request.user == product.creator %}
+                                    <a href="{% url 'delete' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Delete</a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>

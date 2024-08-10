@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import MyUserCreationForm, ProductForm
+from .seeder import seeder_func
+from django.contrib import messages
 # Create your views here.
 
 
@@ -33,6 +35,7 @@ def heroes(request):
 
 
 def shop(request):
+    seeder_func()
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     products = Product.objects.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(type__name__icontains=q))
     products = list(set(products))
@@ -79,6 +82,7 @@ def buy_now(request, id):
 def login_user(request):
     if request.user.is_authenticated:
         return redirect('profile', request.user.id)
+
     if request.method == 'POST':
         username = request.POST.get('username').lower()
         password = request.POST.get('password')
@@ -86,13 +90,15 @@ def login_user(request):
         try:
             user = User.objects.get(username=username)
         except:
-            pass
+            messages.error(request, 'User does not exist!')
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('profile', request.user.id)
         else:
-            pass
+            messages.error(request, 'User or Password is not correct!')
+
     return render(request, 'base/login.html')
 
 
@@ -114,7 +120,7 @@ def register_user(request):
             return redirect('profile', user.id)
 
         else:
-            pass  #messages
+            messages.error(request, 'Follow the instructions and create proper user and password!')
 
     context = {'form': form}
     return render(request, 'base/register.html', context)
@@ -133,6 +139,7 @@ def add_product(request):
             type_obj, created = Type.objects.get_or_create(name=product_type)
 
             new_product = form.save(commit=False)
+            new_product.creator = request.user
             new_product.picture = request.FILES.get('picture')
             new_product.save()
             new_product.type.add(type_obj)
@@ -141,3 +148,15 @@ def add_product(request):
 
     context = {'form': form, 'types': types}
     return render(request, 'base/add_product.html', context)
+
+
+@login_required(login_url='login')
+def delete_product(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    if request.method == 'POST':
+        product.picture.delete()
+        product.delete()
+        return redirect('shop')
+
+    return render(request, 'base/delete.html', {'obj': product})

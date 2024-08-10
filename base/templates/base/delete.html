@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+
+{% block title %}
+<title>Delete</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Delete</h1>
+    <hr>
+    <div class="product-details">
+        <img style="height: 200px; width: auto;" src="{{ obj.picture.url }}" alt="{{ obj.name }}">
+        <h2>{{ obj.name }}</h2>
+        <p>{{ obj.description }}</p>
+        <h3>Price: ${{ obj.price }}</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+            <p>Are you sure you want to delete "{{ obj.name }}"?</p>
+            <input type="submit" value="Delete">
+        </form>
+
+        <br><br>
+    </div>
+</div>
+{% endblock %}

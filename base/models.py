@@ -38,13 +38,15 @@ class Type(models.Model):
 
 
 class Product(models.Model):
+    creator = models.ForeignKey('User', on_delete=models.SET("Unknown Creator"))
     picture = models.ImageField(null=True, blank=True)
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=3, default='USD')
     description = models.TextField(max_length=500)
     type = models.ManyToManyField(Type, related_name='products', blank=True)
-
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
     def __str__(self):
         types = ', '.join([type.name for type in self.type.all()])
         return f"{self.name} - {types}"
