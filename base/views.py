@@ -3,11 +3,11 @@ from .models import God, Product, Hero, Creature, User, Type
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import MyUserCreationForm, ProductForm
+from .forms import MyUserCreationForm, ProductForm, UserForm
 from .seeder import seeder_func
 from django.contrib import messages
-# Create your views here.
 
+# Create your views here.
 
 def home(request):
     return render(request, 'base/home.html')
@@ -130,22 +130,20 @@ def register_user(request):
 def add_product(request):
     types = Type.objects.all()
     form = ProductForm()
-
     if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-
-        if form.is_valid():
-            product_type = request.POST.get('type')
-            type_obj, created = Type.objects.get_or_create(name=product_type)
-
-            new_product = form.save(commit=False)
-            new_product.creator = request.user
-            new_product.picture = request.FILES.get('picture')
-            new_product.save()
-            new_product.type.add(type_obj)
-
-            return redirect('shop')
-
+        product_type = request.POST.get('type')
+        type_obj, created = Type.objects.get_or_create(name=product_type)
+        new_product = Product(
+            picture=request.FILES['picture'],
+            name=request.POST['name'],
+            price=request.POST['price'],
+            currency=request.POST['currency'],
+            description=request.POST['description'],
+            creator=request.user
+        )
+        new_product.save()
+        new_product.type.add(type_obj)
+        return redirect('shop')
     context = {'form': form, 'types': types}
     return render(request, 'base/add_product.html', context)
 
@@ -160,3 +158,18 @@ def delete_product(request, id):
         return redirect('shop')
 
     return render(request, 'base/delete.html', {'obj': product})
+
+
+@login_required(login_url='login')
+def update_user(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', user.id)
+
+    context = {'form': form}
+    return render(request, 'base/update_user.html', context)

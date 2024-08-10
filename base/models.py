@@ -54,3 +54,5 @@ class Product(models.Model):
 
 class User(AbstractUser):
     products = models.ManyToManyField(Product, related_name='users', blank=True)
+    avatar = models.ImageField(null=True, default='avatar.svg')
+    bio = models.TextField(null=True)
