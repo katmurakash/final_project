@@ -56,3 +56,19 @@ class User(AbstractUser):
     products = models.ManyToManyField(Product, related_name='users', blank=True)
     avatar = models.ImageField(null=True, default='avatar.svg')
     bio = models.TextField(null=True)
+
+class Image(models.Model):
+    image = models.ImageField(upload_to='gallery/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class Comment(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    image = models.ForeignKey('Image', on_delete=models.CASCADE)
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
+
+    def __str__(self):
+        return self.body

@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+
+{% block title %}<title>View Image</title>{% endblock %}
+
+{% block content %}
+<div class="image-view-container" style="padding: 20px;">
+    <a href="{% url 'gallery' %}">Back to Gallery</a><br>
+    <hr>
+    <div class="image-display" style="text-align: center;">
+        <img src="{{ image.image.url }}" alt="Gallery Image" style="max-width: 100%; height: auto;">
+    </div>
+    <hr>
+</div>
+<div style="margin-left:30px">
+    <h1>Comments</h1>
+    {% if request.user.is_authenticated %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input name="body" placeholder="Enter Comment" required>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    {% endif %}
+    <br>
+    {% for comment in comments %}
+        <div>
+            <a href="{% url 'profile' comment.user.id %}">
+            <img src="{{ comment.user.avatar.url }}" width="50px" height="50px" style="border-radius: 50%;">
+            <strong>{{ comment.user.username }}:</strong> {{ comment.body }}
+            </a><span>{{ comment.created | timesince }}</span>
+            {% if comment.user == request.user %}
+                <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+</div>
+{% endblock %}

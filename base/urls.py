@@ -17,6 +17,10 @@ urlpatterns = ([
     path('register/', views.register_user, name='register'),
     path('add_product/', views.add_product, name='add_product'),
     path('delete_product/<int:id>/', views.delete_product, name='delete'),
-    path('update_user/', views.update_user, name='update_user')
+    path('update_user/', views.update_user, name='update_user'),
+    path('gallery/', views.gallery, name='gallery'),
+    path('upload_image/', views.upload_image, name='upload_image'),
+    path('image/<int:image_id>/', views.view_image, name='view_image'),
+    path('delete_comment/<str:id>', views.delete_comment, name='delete_comment')
 ])
 

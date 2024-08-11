@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import God, Product, Hero, Creature, User, Type
+from .models import God, Product, Hero, Creature, User, Type, Image, Comment
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import MyUserCreationForm, ProductForm, UserForm
+from .forms import MyUserCreationForm, ProductForm, UserForm, ImageForm
 from .seeder import seeder_func
 from django.contrib import messages
 
@@ -173,3 +173,46 @@ def update_user(request):
 
     context = {'form': form}
     return render(request, 'base/update_user.html', context)
+
+
+@login_required(login_url='login')
+def view_image(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
+    image_comments = image.comment_set.all()
+
+    if request.method == "POST":
+        Comment.objects.create(
+            user=request.user,
+            image=image,
+            body=request.POST.get('body')
+        )
+
+    context = {
+        'image': image,
+        'comments': image_comments,
+    }
+    return render(request, 'base/view_image.html', context)
+
+
+def gallery(request):
+    images = Image.objects.all()
+    return render(request, 'base/gallery.html', {'images': images})
+
+
+def upload_image(request):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('gallery')
+    return redirect('gallery')
+
+def delete_comment(request, id):
+    comment = Comment.objects.get(id=id)
+    image = comment.image
+    if request.method == 'POST':
+        comment.delete()
+        return redirect('view_image', image.id)
+    return render(request, 'base/delete_comment.html', {'obj': comment})
+
+

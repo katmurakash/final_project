@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Product
+from .models import User, Product, Image
 from django import forms
 from django.forms import ModelForm
 
@@ -20,3 +20,8 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['avatar', 'username', 'email', 'bio', 'products']
+
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = ['image']
