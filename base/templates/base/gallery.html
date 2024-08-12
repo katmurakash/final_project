@@ -3,31 +3,46 @@
 {% block title %}<title>Gallery</title>{% endblock %}
 
 {% block content %}
-<div class="gallery-container" style="padding: 20px;">
-    <h1>Image Gallery</h1>
-    <hr>
+<div class="gallery-container" style="padding: 40px; max-width: 1200px; margin: auto;">
+    <h1 style="text-align: center; font-family: 'Arial', sans-serif; font-weight: bold; color: #333;">Image Gallery</h1>
+    <hr style="border: 1px solid #ccc; margin-bottom: 40px;">
 
-    <div class="upload-form" style="margin-bottom: 20px;">
-        <form method="POST" action="{% url 'upload_image' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="image" class="form-label">Upload Image</label><br>
-                <input type="file" id="image" name="image">
-            </div>
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
+        <div style="text-align: right; margin-bottom: 20px;">
+            <a href="{% url 'upload_image' %}" class="btn btn-primary" style="background-color: #000; border: none; padding: 10px 20px; border-radius: 5px; color: white; text-decoration: none;">Add Image</a>
+        </div>
+    {% endif %}
 
-    <div class="gallery-grid" style="display: flex; flex-wrap: wrap; gap: 20px;">
+    <div class="gallery-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
         {% for image in images %}
-        <div class="image-item">
+        <div class="image-item" style="overflow: hidden; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 500px;">
             <a href="{% url 'view_image' image.id %}">
-                <img src="{{ image.image.url }}" alt="Image" style="max-width: 100px; height: auto;">
+                <img src="{{ image.image.url }}" alt="{{ image.title }} by {{ image.artist }}" style="width: 100%; height: 70%; object-fit: cover; transition: transform 0.3s ease;">
             </a>
+            <div style="padding: 10px; text-align: center; height: 30%; display: flex; flex-direction: column; justify-content: center;">
+                <h2 style="font-family: 'Arial', sans-serif; color: #555; margin: 0;">{{ image.title }}</h2>
+                <p style="font-family: 'Arial', sans-serif; color: #777; margin: 0;">by {{ image.artist }}</p>
+            </div>
         </div>
         {% empty %}
-        <p>No images available. Be the first to upload!</p>
+        <p style="text-align: center; color: #777; font-family: 'Arial', sans-serif;">No images available. Be the first to upload!</p>
         {% endfor %}
     </div>
 </div>
+
+<style>
+    .image-item img:hover {
+        transform: scale(1.05);
+    }
+
+    .btn-primary {
+        background-color: #000;
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #333;
+    }
+</style>
 {% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block title %}<title>Upload Image</title>{% endblock %}
+
+{% block content %}
+<div class="upload-container" style="padding: 40px; max-width: 800px; margin: auto;">
+    <h1 style="text-align: center; font-family: 'Arial', sans-serif; font-weight: bold; color: #333;">Upload New Image</h1>
+    <hr style="border: 1px solid #ccc; margin-bottom: 40px;">
+
+    <div class="upload-form" style="text-align: center;">
+        <form method="POST" action="{% url 'upload_image' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3" style="margin-bottom: 20px;">
+                <label for="title" class="form-label" style="font-family: 'Arial', sans-serif; font-weight: bold; color: #555;">Image Title</label><br>
+                <input type="text" id="title" name="title" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+            </div>
+            <div class="mb-3" style="margin-bottom: 20px;">
+                <label for="artist" class="form-label" style="font-family: 'Arial', sans-serif; font-weight: bold; color: #555;">Artist Name</label><br>
+                <input type="text" id="artist" name="artist" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+            </div>
+            <div class="mb-3" style="margin-bottom: 20px;">
+                <label for="image" class="form-label" style="font-family: 'Arial', sans-serif; font-weight: bold; color: #555;">Upload Image</label><br>
+                <input type="file" id="image" name="image" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: #000; border: none; padding: 10px 20px; border-radius: 5px; color: white;">Upload</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .btn-primary {
+        background-color: #000;
+        border: none;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: #333;
+    }
+</style>
+{% endblock %}

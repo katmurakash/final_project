@@ -1,4 +1,13 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+  <script type="text/javascript">
+        window.addEventListener("scroll", function() {
+            var header = document.querySelector("header");
+            header.classList.toggle("sticky", window.scrollY > 0);
+        });
+    </script>
 <header>
+
     <a href="{% url 'home' %}" class="logo">Geo Myths</a>
     <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
@@ -6,12 +15,10 @@
         <li><a href="{% url 'creatures' %}">Creatures</a></li>
         <li><a href="{% url 'heroes' %}">Heroes</a></li>
         <li><a href="{% url 'shop' %}">Shop</a></li>
+        <li><a href="{% url 'gallery' %}">Gallery</a></li>
         {% if request.user.is_authenticated %}
             <li>
                 <a href="{% url 'profile' request.user.id %}"><img src="https://cdn-icons-png.flaticon.com/128/428/428173.png" style="width: 24px; height: 24px;"></a>
-            </li>
-            <li>
-                <a href="{% url 'logout' %}">Log out</a>
             </li>
         {% else %}
             <li>
@@ -20,15 +27,22 @@
         {% endif %}
     </ul>
     <form class="d-flex" role="search" action="{% if page_name == 'deities' %}{% url 'deities' %}{% elif page_name == 'creatures' %}{% url 'creatures' %}{% elif page_name == 'heroes' %}{% url 'heroes' %}{% elif page_name == 'shop' %}{% url 'shop' %}{% endif %}" method="get">
-        <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-light" type="submit">Search</button>
+    <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn search-button" type="submit">
+        <img src="{% static 'images/search.png' %}" alt="Search">
+    </button>
     </form>
-    {% if request.user.is_authenticated %}
-        <div>
-            <a href="{% url 'profile' request.user.id %}">
-                <img src="{{ request.user.avatar.url }}" width="50px" height="50px" style="border-radius: 50%;">
-                <label style="color:white;">{{ request.user.username }}</label>
-            </a>
+
+   {% if request.user.is_authenticated %}
+    <div class="dropdown profile-dropdown">
+        <a href="#" class="dropbtn">
+            <img src="{{ request.user.avatar.url }}" width="50px" height="50px" style="border-radius: 50%;">
+            <label style="color:white;">{{ request.user.username }}</label>
+        </a>
+        <div class="dropdown-content">
+            <a href="{% url 'update_user' %}">Update Profile</a>
+            <a href="{% url 'logout' %}">Log out</a>
         </div>
-    {% endif %}
+    </div>
+{% endif %}
 </header>

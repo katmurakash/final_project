@@ -21,7 +21,8 @@ class UserForm(ModelForm):
         model = User
         fields = ['avatar', 'username', 'email', 'bio', 'products']
 
-class ImageForm(forms.ModelForm):
+
+class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ['image']
+        fields = ['title', 'artist', 'image']

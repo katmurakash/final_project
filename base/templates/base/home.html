@@ -1,19 +1,42 @@
 {% extends 'main.html' %}
-{% block title %} <title>Home</title>{% endblock %}
+{% block title %}<title>Home</title>{% endblock %}
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 
 {% block content %}
+
     <section class="banner">
         <video autoplay muted loop id="myVideo">
             <source src="{% static 'videos/geo.mp4' %}" type="video/mp4">
             Your browser does not support HTML5 video.
         </video>
     </section>
-    <script type="text/javascript">
-        window.addEventListener("scroll", function() {
-            var header = document.querySelector("header");
-            header.classList.toggle("sticky", window.scrollY > 0);
-        });
-    </script>
+       <div class="content-container">
+        <div class="text-container">
+            <h2>
+                <strong>Introduction :</strong>
+                <br></h2>
+            <p class="lora-custom-text">Georgian mythology (Georgian: ქართული მითოლოგია, romanized: kartuli mitologia) represents the rich tapestry of legends and beliefs held by the pre-Christian Georgians, an indigenous Caucasian ethnic group native to Georgia and the South Caucasus. The mythology of the Kartvelian peoples is intertwined with the ancient religions of the kingdoms of Diauehi, Colchis, and Iberia, and later influenced by Greek, Vainakh, and Iranian mythologies. These influences include the Zoroastrian religion of ancient Persia and the belief systems of the Scythians and Sarmatians.</p>
+            <p>The Georgian mythological tradition is preserved primarily through folklore, blending with Christian legends after the conversion of Georgia to Christianity. This process was uneven, with lowland regions adopting Christianity earlier than the highland regions of the Greater Caucasus, where pagan practices persisted well into the 20th century. Thus, Georgian mythology contains elements both influenced by Christianity and rooted in ancient paganism.</p>
+            <h2>Creation Myth :</h2>
+            <p class="lora-custom-text"> In the beginning, there existed only the head god (მორიგე ღმერთი) and his Sister. She made him unhappy, so he cursed her. The sister became a demon. For every good thing that the head god created, the Demon created an evil thing to mar/oppose it. Women too was a creation of the Demon, as were the lesser demons (Georgian: დევი, romanized: devi – see below), while men and the lesser gods were creations of Morige Ghmerti. The lesser gods grew weary in their unceasing fight with the demons and fled to the upper world of Zeskneli (ზესკნელი), leaving behind the men. The men however lacked the power to resist the demons, so the lesser gods (Georgian: ღვთის შვილნი, romanized: ghvtis shvilni – see below) hunted down the demons and drove them underground to the netherworld of Kveskneli (ქვესკნელი). The demons left behind them the women who, like them, were part of the evil creation.</p>
+            <p class="lora-custom-text">Men and women are thus only emanations of, or substitutes for, the gods above and the demons below, respectively. The same principle holds true for all created things: the entities and substances of the universe are divided into two antagonistic series, one wild and demonic, the other social and divine. </p>
+            <br>
+            <h2>Cosmology : </h2><br>
+            <div class="image-text-container">
+                <img src="{% static 'images/Zeskneli.jpg' %}" class="left-image" height="350px" width="400px">
+                <p class="lora-custom-text">The only entities or substances that are truly real are those of the upper world of Zeskneli and the lower world of Kveskneli. The middle world inhabited by humans is thus only a place of passage and meeting, and the beings who people it have no essence in themselves, being only emanations of the divine or subterranean worlds, or else their unions. In pre-Christian Georgian mythology, the universe is perceived as a sphere. It comprises three worlds or levels, known as skneli (სკნელი): Zeskneli (ზესკნელი) – the highest world, and the home of the gods. White is the color of Zeskneli. </p>
+            </div><br>
+             <div class="image-text-container">
+                <img src="{% static 'images/earth.jpg' %}" class="left-image" height="350px" width="400px">
+                <p class="lora-custom-text">The Earth – the middle world, home of mortals. Its center is divided into two regions, anterior (tsina samkaro, წინა სამყარო; or tsinaskneli, წინასკნელი) and posterior (ukana samkaro, უკანა სამყარო; or ukana skneli, უკანასკნელი); – beyond which the lands of Earth are divided by seven or nine mountains (or seas), which a hero can traverse only by first undergoing a spiritual transformation (known as gardatsvaleba (გარდაცვალება) – which is also the word for "death") and seeking the help of magical animals, such as the Paskunji, the Rashi and others. Red is the colour of this world. </p>
+            </div><br>
+             <div class="image-text-container">
+                <img src="{% static 'images/Kveskneli.png' %}" class="left-image" height="350px" width="400px">
+                 <p class="lora-custom-text">Kveskneli (ქვესკნელი) – the lowest world or underworld, inhabited by the ogres, serpents, and demons. Black is the colour of Kveskneli. </p>
+            </div>
+        </div>
+    </div>
+
 
 {% endblock %}

@@ -1,8 +1,10 @@
 {% extends 'main.html' %}
-{% block title %} <title>add</title>{% endblock %}
+{% block title %}<title>Add Product</title>{% endblock %}
 
 {% block content %}
-<form method="POST" action="" enctype="multipart/form-data">
+  <h1>Add a product</h1>
+<hr><br>
+<form id="add-product-form" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
         <label>Product Image</label>
@@ -17,7 +19,7 @@
     </div>
     <br>
     <div>
-        <label>Category :</label>
+        <label>Category:</label>
         <br>
         <input required type="text" name="type" list="type-list">
         <datalist id="type-list">

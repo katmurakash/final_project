@@ -3,20 +3,19 @@
 {% block title %}<title>Update Profile</title>{% endblock %}
 
 {% block content %}
-
+<h1>Update Your Profile :</h1><hr>
 <br>
-    <div style="padding-left: 20px;">
-        <a href="{{ request.META.HTTP_REFERER }}">Go Back</a>
-         <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% for field in form %}
-                <div>
-                    {{ field.label }}<br>
-                    {{ field }}
-                </div>
-            {% endfor %}
-             <button class="btn btn-info" type="submit">Update Profile</button>
-         </form>
-    </div>
-
+<div class="profile-container">
+    <a href="{{ request.META.HTTP_REFERER }}" class="back-link">Go Back</a>
+    <form method="POST" action="" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label }}<br>
+                {{ field }}
+            </div>
+        {% endfor %}
+        <button class="btn btn-submit" type="submit">Update Profile</button>
+    </form>
+</div><br>
 {% endblock %}

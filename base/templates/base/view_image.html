@@ -4,35 +4,43 @@
 
 {% block content %}
 <div class="image-view-container" style="padding: 20px;">
-    <a href="{% url 'gallery' %}">Back to Gallery</a><br>
+    <a href="{% url 'gallery' %}" style="text-decoration: none; color: #333; font-family: 'Arial', sans-serif;">Back to Gallery</a><br>
     <hr>
     <div class="image-display" style="text-align: center;">
-        <img src="{{ image.image.url }}" alt="Gallery Image" style="max-width: 100%; height: auto;">
+        <img src="{{ image.image.url }}" alt="Gallery Image" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
     </div>
     <hr>
 </div>
-<div style="margin-left:30px">
-    <h1>Comments</h1>
+<div class="comments-section" style="margin-left: 30px; font-family: 'Arial', sans-serif;">
+    <h1 style="color: #333;">Comments:</h1>
+
     {% if request.user.is_authenticated %}
-        <form action="" method="POST">
+        <form action="" method="POST" class="comment-form">
             {% csrf_token %}
-            <input name="body" placeholder="Enter Comment" required>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <textarea name="body" placeholder="Enter your comment here..." required class="comment-textarea"></textarea>
+            <button type="submit" class="comment-submit">Submit</button>
         </form>
     {% endif %}
+
     <br>
-    {% for comment in comments %}
-        <div>
-            <a href="{% url 'profile' comment.user.id %}">
-            <img src="{{ comment.user.avatar.url }}" width="50px" height="50px" style="border-radius: 50%;">
-            <strong>{{ comment.user.username }}:</strong> {{ comment.body }}
-            </a><span>{{ comment.created | timesince }}</span>
+    <div class="comments-list">
+        {% for comment in comments %}
+        <div class="comment-item">
+            <a href="{% url 'profile' comment.user.id %}" class="comment-link">
+                <img src="{{ comment.user.avatar.url }}" class="comment-avatar" width="50px" height="50px">
+                <div>
+                    <strong class="comment-username">{{ comment.user.username }}:</strong>
+                    <p class="comment-body">{{ comment.body }}</p>
+                </div>
+            </a>
+            <span class="comment-time">{{ comment.created | timesince }}</span>
             {% if comment.user == request.user %}
-                <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+                <a href="{% url 'delete_comment' comment.id %}" class="delete-link">Delete</a>
             {% endif %}
         </div>
-    {% empty %}
-        <p>No comments yet. Be the first to comment!</p>
-    {% endfor %}
+        {% empty %}
+            <p class="no-comments">No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}

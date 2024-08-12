@@ -3,7 +3,7 @@ from .models import God, Product, Hero, Creature, User, Type, Image, Comment
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import MyUserCreationForm, ProductForm, UserForm, ImageForm
+from .forms import MyUserCreationForm, ProductForm, UserForm, ImageUploadForm
 from .seeder import seeder_func
 from django.contrib import messages
 
@@ -51,9 +51,10 @@ def profile(request, pk):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     products = user.products.filter(Q(name__icontains=q) | Q(description__icontains=q) | Q(type__name__icontains=q))
     products = list(set(products))
+    total_price = sum(product.price for product in products)
     heading = "My Products"
     types = Type.objects.all()
-    context = {"products": products, "heading": heading, 'types': types}
+    context = {"products": products, "heading": heading, 'types': types, 'total_price': total_price}
     return render(request, 'base/profile.html', context)
 
 
@@ -175,38 +176,40 @@ def update_user(request):
     return render(request, 'base/update_user.html', context)
 
 
-@login_required(login_url='login')
-def view_image(request, image_id):
-    image = get_object_or_404(Image, id=image_id)
-    image_comments = image.comment_set.all()
-
-    if request.method == "POST":
-        Comment.objects.create(
-            user=request.user,
-            image=image,
-            body=request.POST.get('body')
-        )
-
-    context = {
-        'image': image,
-        'comments': image_comments,
-    }
-    return render(request, 'base/view_image.html', context)
-
-
 def gallery(request):
     images = Image.objects.all()
     return render(request, 'base/gallery.html', {'images': images})
 
 
+@login_required(login_url='login')
 def upload_image(request):
     if request.method == 'POST':
-        form = ImageForm(request.POST, request.FILES)
+        form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            image = form.save(commit=False)
+            # Set artist field based on user input instead of setting to request.user
+            image.save()
             return redirect('gallery')
-    return redirect('gallery')
+    else:
+        form = ImageUploadForm()
 
+    return render(request, 'base/upload_image.html', {'form': form})
+
+
+def view_image(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
+    comments = image.comment_set.all()
+
+    if request.method == 'POST':
+        body = request.POST.get('body')
+        if body and request.user.is_authenticated:
+            Comment.objects.create(user=request.user, image=image, body=body)
+            return redirect('view_image', image_id=image.id)
+
+    return render(request, 'base/view_image.html', {'image': image, 'comments': comments})
+
+
+@login_required(login_url='login')
 def delete_comment(request, id):
     comment = Comment.objects.get(id=id)
     image = comment.image

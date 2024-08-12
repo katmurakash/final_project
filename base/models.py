@@ -57,10 +57,15 @@ class User(AbstractUser):
     avatar = models.ImageField(null=True, default='avatar.svg')
     bio = models.TextField(null=True)
 
+
 class Image(models.Model):
     image = models.ImageField(upload_to='gallery/')
+    title = models.CharField(max_length=255)
+    artist = models.CharField(max_length=255)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.title} by {self.artist}"
 class Comment(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE)
     image = models.ForeignKey('Image', on_delete=models.CASCADE)

@@ -1,18 +1,20 @@
 {% extends 'main.html' %}
 {% block title %} <title>Creatures</title>{% endblock %}
 
-{% block content  %}
-
-    <h1>Creatures</h1>
-    <div style="display: flex; margin-left: 3%;">
-    {% for creature in creatures %}
-    <div class="card" style="margin-left: 3%;">
-        <img height="300px" src="{{ creature.picture.url }}" alt="{{ creature.name }}" class="card-img">
-        <div class="card-content">
-          <h2 class="card-title">{{ creature.name }}</h2>
-            <p class="card-description">{{ creature.description |slice:":150" }}</p>
-            <a href="#" class="card-link">Learn More</a>
+{% block content %}
+    <h1>Creatures</h1><hr><br>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; margin: 0 3%;">
+        {% for creature in creatures %}
+        <div class="card" style="flex: 1 1 calc(33.33% - 40px); box-sizing: border-box; margin-bottom: 20px;">
+            <div style="width: 100%; height: 0; padding-bottom: 75%; position: relative; overflow: hidden;">
+                <img src="{{ creature.picture.url }}" alt="{{ creature.name }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">{{ creature.name }}</h2>
+                <p class="card-description">{{ creature.description|slice:":150" }}</p>
+                <a href="#" class="card-link">Learn More</a>
+            </div>
         </div>
-    </div>
-    {% endfor %}</div>
+        {% endfor %}
+    </div><br><br>
 {% endblock %}

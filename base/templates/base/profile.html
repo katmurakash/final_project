@@ -1,15 +1,11 @@
 {% extends 'main.html' %}
-{% block title %} <title>Profile</title>{% endblock %}
+{% block title %}<title>Profile</title>{% endblock %}
 
 {% block content %}
-  <div class="shop-page-container" style="display: flex; flex-direction: column; padding: 20px;">
+<div class="shop-page-container" style="display: flex; flex-direction: column; padding: 20px;">
     <div style="width: 100%;">
         <h1>{{ heading }}</h1>
         <hr>
-        <a href="{% url 'update_user' %}" style="color:black;">Update Profile</a>
-        <br>
-        <a href="{% url 'add_product' %}">Add Product</a>
-<br>
     </div>
 
     <div style="display: flex; width: 100%;">
@@ -37,11 +33,13 @@
                             <a href="{% url 'drop' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Drop</a>
                             <a href="{% url 'buy_now' product.id %}" style="margin: 5px; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer;">Buy Now</a>
                         </div>
-
                     </div>
                 {% empty %}
                     <p>No products available.</p>
                 {% endfor %}
+            </div>
+            <div class="total-price" style="margin-top: 80px; text-align: right;">
+                <p><strong>Total: {{ total_price|floatformat:2 }}</strong></p>
             </div>
         </div>
     </div>
