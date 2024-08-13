@@ -11,7 +11,7 @@
                 {% for message in messages %}
                     <div class="alert alert-danger alert-dismissible fade show" role="alert" style="background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="background-color: #721c24; border: 1px solid #721c24;"></button>
+                        <button type="button" class="delete-button" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endfor %}
             </div>
@@ -19,12 +19,44 @@
 
         <form method="POST" action="" style="background-color: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
             {% csrf_token %}
-            {{ form.as_p }}
-            <br>
-            <input type="submit" value="Register" class="btn btn-primary" style="background-color: #000; color: #fff; border: none;">
+
+            <div style="margin-bottom: 15px;">
+                {{ form.username.label_tag }}<br>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div style="color: red;">
+                        {{ form.username.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                {{ form.password1.label_tag }}<br>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div style="color: red;">
+                        {{ form.password1.errors }}
+                    </div>
+                {% else %}
+                    <small>Password must be at least 8 characters long, contain a mix of letters and numbers, and must not be too similar to your username or other personal information.</small>
+                {% endif %}
+            </div>
+
+            <!-- Password2 Field with Errors -->
+            <div style="margin-bottom: 15px;">
+                {{ form.password2.label_tag }}<br>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div style="color: red;">
+                        {{ form.password2.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <input type="submit" value="Register" class="delete-button">
             <br><br>
-            <p style="color: #000;">Already Registered?</p>
-            <a href="{% url 'login' %}" class="btn btn-link" style="color: #000;">Login</a><br>
+            <p style="color: #000;">Have an account?</p>
+            <a href="{% url 'login' %}" class="delete-button">Log in</a><br><br>
         </form>
-    </div>
+    </div><br><br>
 {% endblock %}

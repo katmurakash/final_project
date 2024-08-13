@@ -26,11 +26,11 @@
             <label for="password" style="display: block; margin-bottom: 10px; color: #000;">Password:</label>
             <input type="password" id="password" name="password" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 5px;">
 
-            <button type="submit" value="login" style="background-color: #000; color: #fff; border: none; padding: 10px 20px; border-radius: 5px;">Login</button>
+            <button type="submit" value="login" class="delete-button" >Login</button>
 
             <br><br>
             <p style="color: #000;">Have not signed up yet?</p>
-            <a href="{% url 'register' %}" class="btn btn-link" style="color: #000;">Register</a>
+            <a href="{% url 'register' %}" class="delete-button">Register</a>
         </form>
     </div>
 {% endblock %}

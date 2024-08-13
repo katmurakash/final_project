@@ -5,7 +5,7 @@
 <h1>Products:</h1><hr>
 <div class="shop-page-container" style="display: flex; flex-direction: column; padding: 20px;">
     <div style="margin-bottom: 20px;">
-        <a href="{% url 'add_product' %}" style="display: inline-block; padding: 10px; background-color: #000; color: #fff; text-decoration: none; border-radius: 5px;">Add Product</a>
+        <a href="{% url 'add_product' %}" class="delete-button">Add  a product</a>
     </div>
     <div style="display: flex; width: 100%;">
         <div class="category-container" style="flex: 1; padding: 20px; max-width: 200px;">
@@ -34,8 +34,8 @@
                         <div class="product-actions" style="display: flex; flex-direction: column; gap: 10px; margin-top: auto; width: 100%;">
                             {% if request.user.is_authenticated %}
                                 <div class="button-group" style="display: flex; gap: 10px;">
-                                    <a href="{% url 'add' product.id %}" class="action-button" style="padding: 6px 12px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer; width: 100%; font-size: 0.8em;">Add to Cart</a>
-                                    <a href="{% url 'buy_now' product.id %}" class="action-button" style="padding: 6px 12px; background-color: #000; color: #fff; text-decoration: none; border: none; cursor: pointer; width: 100%; font-size: 0.8em;">Buy Now</a>
+                                    <a href="{% url 'add' product.id %}"  class="delete-button">Add to Cart</a>
+                                    <a href="{% url 'buy_now' product.id %}" class="delete-button">Buy Now</a>
                                 </div>
                             {% endif %}
                         </div>
